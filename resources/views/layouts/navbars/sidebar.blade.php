@@ -43,6 +43,12 @@
                                 <p> {{ __("Jenis Bola") }} </p>
                             </a>
                         </li>
+                        <li class="@if ($activePage == 'product') active @endif">
+                            <a href="{{route('admin.product.index')}}">
+                                <i class="fas fa-futbol"></i>
+                                <p> {{ __("Product") }} </p>
+                            </a>
+                        </li>
                         <li class="@if ($activePage == 'payment-type') active @endif">
                             <a href="{{route('admin.paymentType.index')}}">
                                 <i class="fas fa-money-check"></i>

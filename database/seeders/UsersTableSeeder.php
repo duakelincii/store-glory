@@ -17,18 +17,18 @@ class UsersTableSeeder extends Seeder
     {
         DB::table('users')->insert([
             'name' => 'Admin',
-            'email' => 'admin@neofutsal.id',
+            'email' => 'admin@gmail.com',
             'email_verified_at' => now(),
-            'password' => Hash::make('neofutsal'),
+            'password' => Hash::make('password'),
             'created_at' => now(),
             'updated_at' => now(),
             'is_admin' => '1'
         ]);
         DB::table('users')->insert([
             'name' => 'User',
-            'email' => 'user@neofutsal.id',
+            'email' => 'user@gmail.com',
             'email_verified_at' => now(),
-            'password' => Hash::make('neofutsal'),
+            'password' => Hash::make('password'),
             'created_at' => now(),
             'updated_at' => now(),
             'is_admin' => '0'

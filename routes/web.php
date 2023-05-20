@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\Master\BallController;
 use App\Http\Controllers\Admin\Master\FieldController;
 use App\Http\Controllers\Admin\Master\PaymentTypeController;
+use App\Http\Controllers\Admin\Master\ProductController;
 use App\Http\Controllers\Admin\Master\UserController;
 use App\Http\Controllers\Admin\Order\IncomeController;
 use App\Http\Controllers\Admin\Order\SummaryController;
@@ -95,6 +96,14 @@ Route::group(['middleware' => 'auth.admin', 'prefix' => 'admin', 'as' => 'admin.
             Route::patch('update/{ball}', [BallController::class, 'update']);
             Route::delete('delete/{ball}', [BallController::class, 'destroy']);
         });
+        Route::get('products', [ProductController::class, 'index'])->name('product.index');
+        Route::prefix('product')->group(function () {
+            Route::post('/', [ProductController::class, 'store'])->name('product.store');
+            Route::get('create', [ProductController::class, 'create'])->name('product.create');
+            Route::get('edit/{product}', [ProductController::class, 'edit']);
+            Route::patch('update/{product}', [ProductController::class, 'update']);
+            Route::delete('delete/{product}', [ProductController::class, 'destroy']);
+        });
         // Lapangan Route | field
         Route::get('fields', [FieldController::class, 'index'])->name('field.index');
         Route::prefix('field')->group(function () {
@@ -137,7 +146,7 @@ Route::group(['middleware' => 'auth.admin', 'prefix' => 'admin', 'as' => 'admin.
     });
     Route::patch('transaction/update/{transaction}',[OrderTransactionController::class,'update'])->name('transaction.update');
 
-    
+
     Route::get('{page}', ['as' => 'page.index', 'uses' => 'App\Http\Controllers\PageController@index']);
 });
 Route::group(['middleware'=>'auth.admin','prefix'=>'api','as'=>'api.'],function(){
@@ -146,7 +155,7 @@ Route::group(['middleware'=>'auth.admin','prefix'=>'api','as'=>'api.'],function(
     Route::get('json/payment-type/{payment}',[PaymentTypeController::class,'json'])->name('json.payment');
     Route::get('json/transaction/{transaction}',[OrderTransactionController::class,'json'])->name('json.transaction');
     Route::get('json/user/{user}',[UserController::class,'json'])->name('json.user');
-    
+
     // Datatable
     Route::get('datatable/orders',[SummaryController::class,'datatable'])->name('orders');
 });
