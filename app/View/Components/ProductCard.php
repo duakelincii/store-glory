@@ -6,15 +6,15 @@ use Illuminate\View\Component;
 
 class ProductCard extends Component
 {
-    public $field;
+    public $product;
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($field)
+    public function __construct($product)
     {
-        $this->field = $field;
+        $this->product = $product;
     }
 
     /**

@@ -4,13 +4,14 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\FutsalField;
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
     public function index()
     {
-        $futsal_fields = FutsalField::where('is_available', '1')->paginate(10);
-        return view('user.dashboard', compact('futsal_fields'));
+        $products = Product::latest()->paginate(10);
+        return view('user.dashboard', compact('products'));
     }
 }

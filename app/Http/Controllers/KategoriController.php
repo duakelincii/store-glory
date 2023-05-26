@@ -1,14 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Master;
+namespace App\Http\Controllers;
 
-use Exception;
-use App\Models\Product;
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Models\Category;
+use Exception;
+use Illuminate\Http\Request;
 
-class ProductController extends Controller
+class KategoriController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,11 +16,10 @@ class ProductController extends Controller
     public function index()
     {
         $q = request()->q;
-        $products = Product::when($q, function ($query) use ($q) {
+        $datas = Category::when($q, function ($query) use ($q) {
             return $query->search($q);
         })->orderByDesc("updated_at")->paginate(6);
-        $category = Category::latest()->get();
-        return view('admin.master.product.index', compact('products', 'category'));
+        return view('admin.master.kategori.index', compact('datas'));
     }
 
     /**
@@ -32,7 +29,6 @@ class ProductController extends Controller
      */
     public function create()
     {
-        //
     }
 
     /**
@@ -45,15 +41,10 @@ class ProductController extends Controller
     {
         try {
             $validated = $request->validate([
-                'name' => 'required|string',
-                'category_id' => 'required|integer',
-                'desc' => 'string',
-                'gambar' => 'mimes:png,jpg'
+                'name' => 'required|string'
             ]);
-            $product = Product::create($validated);
-            $id = $product->id;
-            $product->uploadGambar($validated['gambar']);
-            return redirect()->back()->withSuccess("Produk berhasil ditambah!");
+            Category::create($validated);
+            return redirect()->back()->withSuccess("Kategori berhasil ditambah!");
         } catch (Exception $th) {
             return redirect()->back()->with("errors", $th->getMessage())->withInput();
         }
@@ -88,21 +79,14 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Product $product)
+    public function update(Request $request, $id)
     {
         try {
             $validated = $request->validate([
-                'name' => 'required|string',
-                'category_id' => 'required|integer',
-                'desc' => 'string',
-                'gambar' => 'mimes:png,jpg'
+                'name' => 'required|string'
             ]);
-            $gambar = $validated['gambar'];
-            unset($validated['gambar']);
-            $product->update($validated);
-            if (!empty($gambar)) {
-                $product->uploadGambar($gambar);
-            }
+            $category = Category::findorfail($id);
+            $category->update($validated);
             return redirect()->back()->withSuccess("Kategori telah diperbarui!");
         } catch (Exception $th) {
             return redirect()->back()->with("errors", $th->getMessage())->withInput();
@@ -115,14 +99,15 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Product $product)
+    public function destroy($id)
     {
-        $product->delete();
+        $category = Category::findorfail($id);
+        $category->delete();
         return response()->json(['success' => true, 'message' => 'Data berhasil dihapus!']);
     }
 
-    public function json(Product $product)
+    public function json(Category $kategori)
     {
-        return response()->json(['success' => true, 'data' => $product]);
+        return response()->json(['success' => true, 'data' => $kategori]);
     }
 }

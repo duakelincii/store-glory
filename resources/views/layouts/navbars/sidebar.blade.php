@@ -3,8 +3,8 @@
     Tip 1: You can change the color of the sidebar using: data-color="blue | green | orange | red | yellow"
 -->
     <div class="logo">
-        <a href="{{url('')}}" class="simple-text logo-normal">
-            {{ __('NeoFutsal') }}
+        <a href="{{ url('') }}" class="simple-text logo-normal">
+            {{ __('Neo Sayur') }}
         </a>
     </div>
     <div class="sidebar-wrapper" id="sidebar-wrapper">
@@ -19,40 +19,46 @@
                 <a data-toggle="collapse" href="#master-menu">
                     <i class="fas fa-list"></i>
                     <p>
-                        {{ __("Master") }}
+                        {{ __('Master') }}
                         <b class="caret"></b>
                     </p>
                 </a>
                 <div class="collapse @if (@$parent == 'master') show @endif" id="master-menu">
                     <ul class="nav">
                         <li class="@if ($activePage == 'user') active @endif">
-                            <a href="{{route('admin.user.index')}}">
+                            <a href="{{ route('admin.user.index') }}">
                                 <i class="now-ui-icons users_single-02"></i>
-                                <p> {{ __("Pengguna") }} </p>
+                                <p> {{ __('Pengguna') }} </p>
                             </a>
                         </li>
                         <li class="@if ($activePage == 'field') active @endif">
-                            <a href="{{route('admin.field.index')}}">
+                            <a href="{{ route('admin.field.index') }}">
                                 <i class="fas fa-futbol"></i>
-                                <p> {{ __("Lapangan") }} </p>
+                                <p> {{ __('Lapangan') }} </p>
                             </a>
                         </li>
                         <li class="@if ($activePage == 'ball') active @endif">
-                            <a href="{{route('admin.ball.index')}}">
+                            <a href="{{ route('admin.ball.index') }}">
                                 <i class="fas fa-futbol"></i>
-                                <p> {{ __("Jenis Bola") }} </p>
+                                <p> {{ __('Jenis Bola') }} </p>
                             </a>
                         </li>
                         <li class="@if ($activePage == 'product') active @endif">
-                            <a href="{{route('admin.product.index')}}">
-                                <i class="fas fa-futbol"></i>
-                                <p> {{ __("Product") }} </p>
+                            <a href="{{ route('admin.product.index') }}">
+                                <i class="fa fa-cart-arrow-down" aria-hidden="true"></i>
+                                <p> {{ __('Product') }} </p>
+                            </a>
+                        </li>
+                        <li class="@if ($activePage == 'kategori') active @endif">
+                            <a href="{{ route('admin.kategori.index') }}">
+                                <i class="fa fa-list" aria-hidden="true"></i>
+                                <p> {{ __('Kategori') }} </p>
                             </a>
                         </li>
                         <li class="@if ($activePage == 'payment-type') active @endif">
-                            <a href="{{route('admin.paymentType.index')}}">
+                            <a href="{{ route('admin.paymentType.index') }}">
                                 <i class="fas fa-money-check"></i>
-                                <p> {{ __("Metode Pembayaran") }} </p>
+                                <p> {{ __('Metode Pembayaran') }} </p>
                             </a>
                         </li>
                     </ul>
@@ -62,22 +68,22 @@
                 <a data-toggle="collapse" href="#order-menu">
                     <i class="fas fa-receipt"></i>
                     <p>
-                        {{ __("Orderan") }}
+                        {{ __('Orderan') }}
                         <b class="caret"></b>
                     </p>
                 </a>
                 <div class="collapse @if (@$parent == 'order') show @endif" id="order-menu">
                     <ul class="nav">
                         <li class="@if ($activePage == 'rekap') active @endif">
-                            <a href="{{route('admin.summary.index')}}">
+                            <a href="{{ route('admin.summary.index') }}">
                                 <i class="fas fa-receipt"></i>
-                                <p> {{ __("Rekap Order") }} </p>
+                                <p> {{ __('Rekap Order') }} </p>
                             </a>
                         </li>
                         <li class="@if ($activePage == 'income') active @endif">
-                            <a href="{{route('admin.income.index')}}">
+                            <a href="{{ route('admin.income.index') }}">
                                 <i class="fas fa-hand-holding-usd"></i>
-                                <p> {{ __("Pendapatan") }} </p>
+                                <p> {{ __('Pendapatan') }} </p>
                             </a>
                         </li>
                     </ul>

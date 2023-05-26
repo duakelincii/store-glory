@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\Order\IncomeController;
 use App\Http\Controllers\Admin\Order\SummaryController;
 use App\Http\Controllers\Admin\Order\TransactionController as OrderTransactionController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\User\AuthController;
 use App\Http\Controllers\User\DashboardController as UserDashboardController;
 use App\Http\Controllers\User\OrderController;
@@ -85,7 +86,7 @@ Route::group(['middleware' => 'auth.admin', 'prefix' => 'admin', 'as' => 'admin.
             Route::post('/', [UserController::class, 'store'])->name('user.store');
             Route::get('create', [UserController::class, 'create'])->name('user.create');
             Route::patch('update/{user}', [UserController::class, 'update']);
-            Route::delete('delete/{user}',[UserController::class,'destroy']);
+            Route::delete('delete/{user}', [UserController::class, 'destroy']);
         });
         // Ball Route | ball
         Route::get('balls', [BallController::class, 'index'])->name('ball.index');
@@ -96,6 +97,12 @@ Route::group(['middleware' => 'auth.admin', 'prefix' => 'admin', 'as' => 'admin.
             Route::patch('update/{ball}', [BallController::class, 'update']);
             Route::delete('delete/{ball}', [BallController::class, 'destroy']);
         });
+
+        // Kategori Route
+        // Route: /admin/master/kategori
+        Route::resource('kategori', KategoriController::class);
+        // Produk
+        // Route: /admin/master/products
         Route::get('products', [ProductController::class, 'index'])->name('product.index');
         Route::prefix('product')->group(function () {
             Route::post('/', [ProductController::class, 'store'])->name('product.store');
@@ -144,18 +151,20 @@ Route::group(['middleware' => 'auth.admin', 'prefix' => 'admin', 'as' => 'admin.
             Route::patch('edit/{income}', [IncomeController::class, 'update']);
         });
     });
-    Route::patch('transaction/update/{transaction}',[OrderTransactionController::class,'update'])->name('transaction.update');
+    Route::patch('transaction/update/{transaction}', [OrderTransactionController::class, 'update'])->name('transaction.update');
 
 
     Route::get('{page}', ['as' => 'page.index', 'uses' => 'App\Http\Controllers\PageController@index']);
 });
-Route::group(['middleware'=>'auth.admin','prefix'=>'api','as'=>'api.'],function(){
+Route::group(['middleware' => 'auth.admin', 'prefix' => 'api', 'as' => 'api.'], function () {
     //JSON
-    Route::get('json/ball/{ball}',[BallController::class,'json'])->name('json.ball');
-    Route::get('json/payment-type/{payment}',[PaymentTypeController::class,'json'])->name('json.payment');
-    Route::get('json/transaction/{transaction}',[OrderTransactionController::class,'json'])->name('json.transaction');
-    Route::get('json/user/{user}',[UserController::class,'json'])->name('json.user');
+    Route::get('json/ball/{ball}', [BallController::class, 'json'])->name('json.ball');
+    Route::get('json/payment-type/{payment}', [PaymentTypeController::class, 'json'])->name('json.payment');
+    Route::get('json/transaction/{transaction}', [OrderTransactionController::class, 'json'])->name('json.transaction');
+    Route::get('json/user/{user}', [UserController::class, 'json'])->name('json.user');
+    Route::get('json/kategori/{kategori}', [KategoriController::class, 'json'])->name('json.kategori');
+    Route::get('json/product/{product}', [ProductController::class, 'json'])->name('json.product');
 
     // Datatable
-    Route::get('datatable/orders',[SummaryController::class,'datatable'])->name('orders');
+    Route::get('datatable/orders', [SummaryController::class, 'datatable'])->name('orders');
 });

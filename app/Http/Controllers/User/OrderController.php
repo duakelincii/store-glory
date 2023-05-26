@@ -21,10 +21,10 @@ class OrderController extends Controller
     public function detail(FutsalField $field)
     {
         $ball_types = BallType::select("name")->where('is_available', '1')->get();
-        $images = FutsalImage::where(['futsal_field_id'=>$field->id]);
+        $images = FutsalImage::where(['futsal_field_id' => $field->id]);
         $imageExist = $images->exists();
         $images = $images->get();
-        return view('user.order.detail', compact('field', 'ball_types','images','imageExist'));
+        return view('user.order.detail', compact('field', 'ball_types', 'images', 'imageExist'));
     }
 
     public function order(FutsalField $field)

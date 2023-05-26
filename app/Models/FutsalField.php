@@ -8,19 +8,20 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+
 class FutsalField extends Model
 {
-    use HasFactory,SearchTrait;
+    use HasFactory, SearchTrait;
 
     protected $table = 'futsal_fields';
 
     protected $fillable = [
-        'field_type_id', 
-        'name', 
-        'price', 
-        'width', 
+        'field_type_id',
+        'name',
+        'price',
+        'width',
         'height',
-        'img', 
+        'img',
         'is_available'
     ];
 
@@ -29,8 +30,9 @@ class FutsalField extends Model
         return $this->belongsTo(FieldType::class, 'field_type_id', 'id');
     }
 
-    public function futsal_images(){
-        return $this->hasMany(FutsalImage::class,'futsal_field_id','id');
+    public function futsal_images()
+    {
+        return $this->hasMany(FutsalImage::class, 'futsal_field_id', 'id');
     }
 
     // Helper
@@ -39,22 +41,22 @@ class FutsalField extends Model
         return $this->attributes['is_available'] < 1 ? false : true;
     }
 
-    public function uploadCover($file){
-        try{
-            $oldFile = str_replace("storage","public",$this->attributes['img']);
+    public function uploadCover($file)
+    {
+        try {
+            $oldFile = str_replace("storage", "public", $this->attributes['img']);
             if (Storage::exists($oldFile)) {
                 Storage::delete($oldFile);
             }
             $ext = $file->extension();
-            $filename = Str::random(30).".".$ext;
+            $filename = Str::random(30) . "." . $ext;
             $fullPath = "futsal-field/cover-{$filename}";
             $file->storeAs("public", $fullPath);
             $this->update(['img' => "storage/$fullPath"]);
             $this->touch();
             return true;
-        }catch(Exception $e){
+        } catch (Exception $e) {
             return false;
         }
     }
-    
 }
