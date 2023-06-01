@@ -24,9 +24,11 @@
                     <p>Remember Me</p>
                 </label>
             </div>
-            <button type="submit" class="btn-primary" type="submit">
+            <button type="submit" class="btn-primary mb-4" type="submit">
                 Login
             </button>
+            <a class="px-3 py-2 w-full font-semibold text-xs text-center rounded-md transition duration-500
+            bg-secondary block hover:bg-primary text-primary hover:text-white" href="{{ '/auth/redirect'}}">Login With Google</a>
             <p class="mt-3 text-sm font-medium text-gray-600">
                 Don't have an account? <a href="{{route('register')}}" class="text-primary">Register</a>
             </p>

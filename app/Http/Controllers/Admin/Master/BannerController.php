@@ -81,7 +81,8 @@ class BannerController extends Controller
      */
     public function edit($id)
     {
-        //
+        $item = Banner::findOrFail($id);
+        return view('admin.master.banner.edit',compact('item'));
     }
 
     /**
@@ -93,6 +94,7 @@ class BannerController extends Controller
      */
     public function update(Request $request, Banner $banner)
     {
+        // dd($request->all());
         try {
             $validated = $request->validate([
                 'title' => 'required|string',

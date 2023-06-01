@@ -54,10 +54,11 @@
                                         style="object-fit:cover;width:100%;max-height:150px">
                                 </div>
                                 <div class="card-footer d-flex justify-content-between">
-                                    <button type="button" data-id="{{ $data->id }}"
+                                    {{-- <button type="button" onclick="return edit({{ $data->id }})"
                                         class="btn btn-info btn-round w-100 mr-2 btn-edit">
                                         <i class="fas fa-pen"></i>
-                                    </button>
+                                    </button> --}}
+                                    <a href="#" class="btn btn-info btn-round w-100 mr-2" onclick="return edit({{ $data->id }})"><i class="fas fa-pen"></i></a>
                                     <button type="button" data-id="{{ $data->id }}"
                                         class="btn btn-danger btn-round w-100 btn-delete">
                                         <i class="fas fa-trash"></i>
@@ -130,36 +131,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="" method="post" id="formEdit">
-                        @csrf
-                        @method('PATCH')
-                        <div class="form-group mb-3">
-                            <label class="form-label">Name <small class="text-danger">*</small></label>
-                            <input type="text" name="title" value="{{ old('title') }}" placeholder="Banner"
-                                class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label for="">Gambar</label>
-                            <input type="file" name="gambar" class="d-none" id="gambar">
-                            <div class="px-2 py-3 rounded border text-secondary upload-image" data-target="#gambar">
-                                <i class="fas fa-image"></i> Upload Gambar
-                            </div>
-                        </div>
-                        <div class="form-group mb-3">
-                            <input type="checkbox" name="is_active" value="{{old('is_active')}}" >
-                            <label for="">Active</label>
-                        </div>
-                        <div class="d-flex justify-content-between">
-                            <button type="button" class="btn btn-secondary btn-round" data-dismiss="modal"
-                                aria-label="Close">
-                                Tutup
-                            </button>
-                            <button type="reset" class="d-none"></button>
-                            <button type="submit" class="btn btn-info btn-round" id="btnSave">
-                                Simpan Perubahan
-                            </button>
-                        </div>
-                    </form>
+                    <div id="page" class="p-2"></div>
                 </div>
             </div>
         </div>
@@ -167,6 +139,16 @@
 @endpush
 @push('js')
     <script>
+
+        function edit(id) {
+            $.get("{{ url('admin/master/banner/edit/') }}/" + id , {}, function(data, status) {
+                $("#modalEditTitle").html('Edit Banner')
+                $("#page").html(data);
+                $("#modalEdit").modal('show');
+                CKEDITOR.replace( 'desc' );
+            });
+        }
+
         $(document).ready(function() {
 
             //Upload Image
@@ -202,6 +184,8 @@
                             formEdit.attr('action',
                                 `{{ route('admin.banner.store') }}/update/${banner?.id}`);
                             formEdit.find("input[name='title']").val(banner?.title);
+                            formEdit.find("input[name='is_active']").val(banner?.is_active);
+                            formEdit.find("input[name='gambar']").html(banner?.gambar);
                             return $('#modalEdit').modal('show');
                         }
                         return toastr("error", "Invalid Error! Try again later");

@@ -9,8 +9,8 @@
         <i class="fas fa-xl fa-receipt text-xl"></i>
         <small class="text-xs block">Cart</small>
     </a>
-    <a href="{{ route('app.cart') }}"
-        class="{{ request()->routeIs('app.cart.*') || request()->routeIs('app.cart') ? 'active' : null }}">
+    <a href="https://wa.me/{{$setting->no_wa}}?text=Selamat%20Datang%20Di%20{{$setting->name}}%20Ada%20yang%20bisa%20kami%20bantu%20%3F"
+        class="">
         <i class="fab fa-xl fa-whatsapp text-xl"></i>
         <small class="text-xs block">Whatsapp</small>
     </a>

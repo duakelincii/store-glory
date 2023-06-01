@@ -68,10 +68,11 @@
                                     </div>
                                 </div>
                                 <div class="card-footer d-flex justify-content-between">
-                                    <button type="button" data-id="{{ $data->id }}"
+                                    {{-- <button type="button" data-id="{{ $data->id }}"
                                         class="btn btn-info btn-round w-100 mr-2 btn-edit">
                                         <i class="fas fa-pen"></i>
-                                    </button>
+                                    </button> --}}
+                                    <a href="#" class="btn btn-info btn-round w-100 mr-2" onclick="return edit({{ $data->id }})"><i class="fas fa-pen"></i></a>
                                     <button type="button" data-id="{{ $data->id }}"
                                         class="btn btn-danger btn-round w-100 btn-delete">
                                         <i class="fas fa-trash"></i>
@@ -156,49 +157,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="" method="post" id="formEdit">
-                        @csrf
-                        @method('PATCH')
-                        <div class="form-group mb-3">
-                            <label class="form-label">Produk <small class="text-danger">*</small></label>
-                            <input type="text" name="name" value="{{ old('name') }}" placeholder="Product"
-                                class="form-control">
-                        </div>
-                        <div class="form-group mb-3">
-                            <label class="form-label">Harga <small class="text-danger">*</small></label>
-                            <input type="text" name="harga" value="{{ old('harga') }}" placeholder="Harga Product"
-                                class="form-control">
-                        </div>
-                        <div class="form-group mb-3">
-                            <label class="form-label">Kategori <small class="text-danger">*</small></label>
-                            <select class="form-control select2" name="category_id" id="">
-                                @foreach ($category as $dataCategory)
-                                    <option value="{{ $dataCategory->id }}">{{ $dataCategory->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="form-group mb-3">
-                            <label for="">Deskripsi</label>
-                            <textarea class="form-control" name="desc" id="" rows="3"></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="">Gambar</label>
-                            <input type="file" name="gambar" class="d-none" value="{{old('gambar')}}" id="gambar">
-                            <div class="px-2 py-3 rounded border text-secondary upload-image" data-target="#gambar">
-                                <i class="fas fa-image"></i> Upload Gambar
-                            </div>
-                        </div>
-                        <div class="d-flex justify-content-between">
-                            <button type="button" class="btn btn-secondary btn-round" data-dismiss="modal"
-                                aria-label="Close">
-                                Tutup
-                            </button>
-                            <button type="reset" class="d-none"></button>
-                            <button type="submit" class="btn btn-info btn-round" id="btnSave">
-                                Simpan Perubahan
-                            </button>
-                        </div>
-                    </form>
+                    <div id="page" class="p-2"></div>
                 </div>
             </div>
         </div>
@@ -206,6 +165,15 @@
 @endpush
 @push('js')
     <script>
+
+        function edit(id) {
+            $.get("{{ url('admin/master/product/edit/') }}/" + id , {}, function(data, status) {
+                $("#modalEditTitle").html('Edit Product')
+                $("#page").html(data);
+                $("#modalEdit").modal('show');
+                CKEDITOR.replace( 'desc' );
+            });
+        }
         $(document).ready(function() {
 
             //Upload Image
@@ -217,6 +185,7 @@
             $('input[name="img"]').change(function() {
                 let images = ``;
                 const files = document.querySelector('input[name="gambar"]').files;
+                console.log(files)
                 for (let i = 0; i < files.length; i++) {
                     const file = files[i];
                     images +=
@@ -237,11 +206,14 @@
                     success: function(data) {
                         if (data?.success) {
                             const product = data?.data;
+                            console.log(product)
                             const formEdit = $('#formEdit');
                             formEdit.attr('action',
                                 `{{ route('admin.product.store') }}/update/${product?.id}`);
                             formEdit.find("input[name='name']").val(product?.name);
-                            formEdit.find("input[name='desc']").val(product?.desc);
+                            formEdit.find("input[name='harga']").val(product?.harga);
+                            formEdit.find("input[name='desc']").html(product?.desc);
+                            formEdit.find("input[name='gambar']").html(product?.gambar);
                             formEdit.find(
                                 `input[name='category_id'][value='${product?.category_id}']`
                             ).prop('selected', true);

@@ -38,6 +38,9 @@ Route::get('/', [UserDashboardController::class, 'index'])->name('app');
 Route::get('login', [AuthController::class, 'login'])->name('login');
 Route::post('login', [AuthController::class, 'authLogin'])->name('login');
 
+Route::get('/auth/redirect', [AuthController::class,'redirectToProvider']);
+Route::get('/auth/callback', [AuthController::class,'handleProviderCallback']);
+
 Route::get('register', [AuthController::class, 'register'])->name('register');
 Route::post('register', [AuthController::class, 'authRegister']);
 
@@ -110,8 +113,8 @@ Route::group(['middleware' => 'auth.admin', 'prefix' => 'admin', 'as' => 'admin.
         Route::prefix('product')->group(function () {
             Route::post('/', [ProductController::class, 'store'])->name('product.store');
             Route::get('create', [ProductController::class, 'create'])->name('product.create');
-            Route::get('edit/{product}', [ProductController::class, 'edit']);
-            Route::patch('update/{product}', [ProductController::class, 'update']);
+            Route::get('edit/{product}', [ProductController::class, 'edit'])->name('product.edit');
+            Route::post('update/{product}', [ProductController::class, 'update'])->name('product.update');
             Route::delete('delete/{product}', [ProductController::class, 'destroy']);
         });
         // Route: /admin/master/banner
@@ -119,8 +122,8 @@ Route::group(['middleware' => 'auth.admin', 'prefix' => 'admin', 'as' => 'admin.
         Route::prefix('banner')->group(function () {
             Route::post('/', [BannerController::class, 'store'])->name('banner.store');
             Route::get('create', [BannerController::class, 'create'])->name('banner.create');
-            Route::get('edit/{banner}', [BannerController::class, 'edit']);
-            Route::patch('update/{banner}', [BannerController::class, 'update']);
+            Route::get('edit/{banner}', [BannerController::class, 'edit'])->name('banner.edit');
+            Route::post('update/{banner}', [BannerController::class, 'update'])->name('banner.update');
             Route::delete('delete/{banner}', [BannerController::class, 'destroy']);
         });
 
@@ -168,6 +171,7 @@ Route::group(['middleware' => 'auth.admin', 'prefix' => 'api', 'as' => 'api.'], 
     Route::get('json/user/{user}', [UserController::class, 'json'])->name('json.user');
     Route::get('json/kategori/{kategori}', [KategoriController::class, 'json'])->name('json.kategori');
     Route::get('json/product/{product}', [ProductController::class, 'json'])->name('json.product');
+    Route::get('json/banner/{banner}', [BannerController::class, 'json'])->name('json.banner');
 
     // Datatable
     Route::get('datatable/orders', [SummaryController::class, 'datatable'])->name('orders');

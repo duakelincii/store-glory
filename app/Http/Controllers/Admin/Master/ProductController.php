@@ -91,7 +91,9 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
-        //
+        $item = Product::findOrFail($id);
+        $category = Category::all();
+        return view('admin.master.product.edit',compact('item','category'));
     }
 
     /**
@@ -104,13 +106,15 @@ class ProductController extends Controller
     public function update(Request $request, Product $product)
     {
         try {
+
             $validated = $request->validate([
                 'name' => 'required|string',
                 'category_id' => 'integer',
                 'desc' => 'string',
                 'gambar' => 'mimes:png,jpg',
-                'harga' => 'required'
+                'harga' => 'string'
             ]);
+
             if ($request->file('gambar')) {
                 $file = $request->file('gambar');
                 $extension = $file->getClientOriginalExtension(); // you can also use file name
@@ -132,6 +136,7 @@ class ProductController extends Controller
                     'harga' => $request->harga
                 ];
             }
+            // dd($inputdata);
             $product->update($inputdata);
             return redirect()->back()->withSuccess("Product telah diperbarui!");
         } catch (Exception $th) {

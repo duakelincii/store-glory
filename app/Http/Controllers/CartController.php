@@ -37,7 +37,7 @@ class CartController extends Controller
                 'qty' => $request->qty
             ]);
         }
-        return redirect(route('app.cart'));
+        return redirect(route('app.cart'))->withSuccess("Product telah Berhasil Ditambahkan Ke Keranjang!");
     }
 
     public  function quantity(Request $request){
