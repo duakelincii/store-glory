@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin\Master;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\PaymentTypeRequest;
 use App\Models\PaymentType;
+use App\Models\Setting;
 use Exception;
 use Helpers;
 use Illuminate\Http\Request;
@@ -23,7 +24,8 @@ class PaymentTypeController extends Controller
         $paymentTypes = PaymentType::when($q,function($query) use($q){
             return $query->search($q);
         })->orderByDesc("created_at")->paginate(6)->withQueryString();
-        return view('admin.master.payment-type.index', compact('paymentTypes'));
+        $setting = Setting::first();
+        return view('admin.master.payment-type.index', compact('paymentTypes','setting'));
     }
 
     /**

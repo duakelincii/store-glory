@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin\Master;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RegisterRequest;
+use App\Models\Setting;
 use App\Models\User;
 use Exception;
 use Helpers;
@@ -25,7 +26,8 @@ class UserController extends Controller
         $users = User::when($q,function($query) use ($q){
             return $query->search($q);
         })->orderByDesc('id')->paginate(12)->withQueryString();
-        return view('admin.master.user.index',compact('users'));
+        $setting = Setting::first();
+        return view('admin.master.user.index',compact('users','setting'));
     }
     /**
      * Store a newly created resource in storage.

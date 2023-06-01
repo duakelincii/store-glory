@@ -1,11 +1,11 @@
 @extends('layouts.app', [
-    'namePage' => 'Kelola Product',
+    'namePage' => 'Kelola Banner',
     'class' => 'login-page sidebar-mini ',
-    'activePage' => 'product',
+    'activePage' => 'banner',
     'backgroundImage' => asset('now') . '/img/bg14.jpg',
     'parent' => 'master',
 ])
-@section('title', 'Product')
+@section('title', 'Banner')
 @section('content')
     <div class="panel-header panel-header-sm">
     </div>
@@ -16,7 +16,7 @@
                     <div class="card-header">
                         <div class="d-flex align-items-center justify-content-between">
                             <div class="card-title">
-                                Kelola Product
+                                Kelola Banner
                             </div>
                             <a href="#" data-toggle="modal" data-target="#modalCreate"
                                 class="btn btn-round btn-primary">
@@ -34,38 +34,24 @@
                         </form>
                         <div class="d-flex justify-content-between">
                             <p class="mt-3">
-                                Hasil : {{ $products->count() }}
+                                Hasil : {{ $banners->count() }}
                             </p>
                             <div>
-                                <a href="{{ route('admin.product.index') }}" class="btn btn-secondary">Reset</a>
+                                <a href="{{ route('admin.banner.index') }}" class="btn btn-secondary">Reset</a>
                                 <button class="btn btn-info">Cari</button>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-12">{{ $products->links('pagination::bootstrap-4') }}</div>
-                    @foreach ($products as $data)
+                    <div class="col-md-12">{{ $banners->links('pagination::bootstrap-4') }}</div>
+                    @foreach ($banners as $data)
                         <div class="col-md-4">
                             <div class="card">
                                 <div class="card-header">
                                     <h2 class="card-title h4 text-center">{{ $data->name }}</h2>
                                     <img src="{{ asset($data->gambar) }}" alt="" class="img"
                                         style="object-fit:cover;width:100%;max-height:150px">
-                                </div>
-                                <div class="card-body description-box">
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <p class="text-muted">Harga</p>
-                                        <p class="text-muted">{{ $data->harga }}</p>
-                                    </div>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <p class="text-muted">Kategori</p>
-                                        <p class="text-muted">{{ $data->category->name }}</p>
-                                    </div>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <p class="text-muted">Deskripsi</p>
-                                        <p class="text-muted">{{ $data->desc }}</p>
-                                    </div>
                                 </div>
                                 <div class="card-footer d-flex justify-content-between">
                                     <button type="button" data-id="{{ $data->id }}"
@@ -80,7 +66,7 @@
                             </div>
                         </div>
                     @endforeach
-                    <div class="col-md-12">{{ $products->links('pagination::bootstrap-4') }}</div>
+                    <div class="col-md-12">{{ $banners->links('pagination::bootstrap-4') }}</div>
                 </div>
             </div>
         </div>
@@ -92,43 +78,31 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Tambah Baru</h5>
+                    <h5 class="modal-title">Tambah Banner</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ route('admin.product.store') }}" method="post" id="formCreate"
+                    <form action="{{ route('admin.banner.store') }}" method="post" id="formCreate"
                         enctype="multipart/form-data">
                         @csrf
                         <div class="form-group mb-3">
-                            <label class="form-label">Produk <small class="text-danger">*</small></label>
-                            <input type="text" name="name" value="{{ old('name') }}" placeholder="Product"
+                            <label class="form-label">Name<small class="text-danger">*</small></label>
+                            <input type="text" name="title" value="{{ old('title') }}" placeholder="Banner"
                                 class="form-control">
                         </div>
-                        <div class="form-group mb-3">
-                            <label class="form-label">Harga <small class="text-danger">*</small></label>
-                            <input type="text" name="harga" value="{{ old('harga') }}" placeholder="Harga Product"
-                                class="form-control">
-                        </div>
-                        <div class="form-group mb-3">
-                            <label class="form-label">Kategori <small class="text-danger">*</small></label>
-                            <select class="form-control select2" name="category_id" id="">
-                                @foreach ($category as $dataCategory)
-                                    <option value="{{ $dataCategory->id }}">{{ $dataCategory->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="form-group mb-3">
-                            <label for="">Deskripsi</label>
-                            <textarea class="form-control" name="desc" id="" rows="3"></textarea>
-                        </div>
+
                         <div class="form-group">
                             <label for="">Gambar</label>
                             <input type="file" name="gambar" class="d-none" id="gambar" accept="image/png,image/jpeg">
                             <div class="px-2 py-3 rounded border text-secondary upload-image" data-target="#gambar">
                                 <i class="fas fa-image"></i> Upload Gambar
                             </div>
+                        </div>
+                        <div class="form-group mb-3">
+                            <input type="checkbox" name="is_active" value="1" >
+                            <label for="">Active</label>
                         </div>
                         <div class="d-flex justify-content-between">
                             <button type="button" class="btn btn-secondary btn-round" data-dismiss="modal"
@@ -150,7 +124,7 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Edit Produk</h5>
+                    <h5 class="modal-title">Edit Banner</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -160,33 +134,20 @@
                         @csrf
                         @method('PATCH')
                         <div class="form-group mb-3">
-                            <label class="form-label">Produk <small class="text-danger">*</small></label>
-                            <input type="text" name="name" value="{{ old('name') }}" placeholder="Product"
+                            <label class="form-label">Name <small class="text-danger">*</small></label>
+                            <input type="text" name="title" value="{{ old('title') }}" placeholder="Banner"
                                 class="form-control">
-                        </div>
-                        <div class="form-group mb-3">
-                            <label class="form-label">Harga <small class="text-danger">*</small></label>
-                            <input type="text" name="harga" value="{{ old('harga') }}" placeholder="Harga Product"
-                                class="form-control">
-                        </div>
-                        <div class="form-group mb-3">
-                            <label class="form-label">Kategori <small class="text-danger">*</small></label>
-                            <select class="form-control select2" name="category_id" id="">
-                                @foreach ($category as $dataCategory)
-                                    <option value="{{ $dataCategory->id }}">{{ $dataCategory->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="form-group mb-3">
-                            <label for="">Deskripsi</label>
-                            <textarea class="form-control" name="desc" id="" rows="3"></textarea>
                         </div>
                         <div class="form-group">
                             <label for="">Gambar</label>
-                            <input type="file" name="gambar" class="d-none" value="{{old('gambar')}}" id="gambar">
+                            <input type="file" name="gambar" class="d-none" id="gambar">
                             <div class="px-2 py-3 rounded border text-secondary upload-image" data-target="#gambar">
                                 <i class="fas fa-image"></i> Upload Gambar
                             </div>
+                        </div>
+                        <div class="form-group mb-3">
+                            <input type="checkbox" name="is_active" value="{{old('is_active')}}" >
+                            <label for="">Active</label>
                         </div>
                         <div class="d-flex justify-content-between">
                             <button type="button" class="btn btn-secondary btn-round" data-dismiss="modal"
@@ -231,20 +192,16 @@
             $('.btn-edit').click(function() {
                 const id = $(this).data('id');
                 $.ajax({
-                    url: `{{ url('api/json/product') }}/${id}`,
+                    url: `{{ url('api/json/banner') }}/${id}`,
                     type: 'get',
                     dataType: 'json',
                     success: function(data) {
                         if (data?.success) {
-                            const product = data?.data;
+                            const banner = data?.data;
                             const formEdit = $('#formEdit');
                             formEdit.attr('action',
-                                `{{ route('admin.product.store') }}/update/${product?.id}`);
-                            formEdit.find("input[name='name']").val(product?.name);
-                            formEdit.find("input[name='desc']").val(product?.desc);
-                            formEdit.find(
-                                `input[name='category_id'][value='${product?.category_id}']`
-                            ).prop('selected', true);
+                                `{{ route('admin.banner.store') }}/update/${banner?.id}`);
+                            formEdit.find("input[name='title']").val(banner?.title);
                             return $('#modalEdit').modal('show');
                         }
                         return toastr("error", "Invalid Error! Try again later");
@@ -256,9 +213,9 @@
             });
             $('.btn-delete').click(function() {
                 const id = $(this).data('id');
-                return confirmDelete(`Anda yakin ingin menghapus Product?`, function() {
+                return confirmDelete(`Anda yakin ingin menghapus banner?`, function() {
                     $.ajax({
-                        url: `{{ route('admin.product.store') }}/delete/${id}`,
+                        url: `{{ route('admin.banner.store') }}/delete/${id}`,
                         type: 'DELETE',
                         dataType: 'json',
                         data: $(this).serialize(),

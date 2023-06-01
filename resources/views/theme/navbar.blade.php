@@ -4,10 +4,15 @@
         <i class="fas fa-xl fa-home text-xl"></i>
         <small class="text-xs block">Home</small>
     </a>
-    <a href="{{ route('app.transaction') }}"
-        class="{{ request()->routeIs('app.transaction.*') || request()->routeIs('app.transaction') ? 'active' : null }}">
+    <a href="{{ route('app.cart') }}"
+        class="{{ request()->routeIs('app.cart.*') || request()->routeIs('app.cart') ? 'active' : null }}">
         <i class="fas fa-xl fa-receipt text-xl"></i>
         <small class="text-xs block">Cart</small>
+    </a>
+    <a href="{{ route('app.cart') }}"
+        class="{{ request()->routeIs('app.cart.*') || request()->routeIs('app.cart') ? 'active' : null }}">
+        <i class="fab fa-xl fa-whatsapp text-xl"></i>
+        <small class="text-xs block">Whatsapp</small>
     </a>
     @auth
         <a href="{{ route('app.profile') }}" class="{{ request()->routeIs('app.profile') ? 'active' : null }}">

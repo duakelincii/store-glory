@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Models\Setting;
 use App\Models\User;
 use Exception;
 use Helpers;
@@ -15,12 +16,14 @@ class ProfileController extends Controller
     public function index()
     {
         $user = auth()->user();
-        return view('user.profile.index', compact('user'));
+        $setting = Setting::first();
+        return view('user.profile.index', compact('user','setting'));
     }
     public function edit()
     {
         $user = auth()->user();
-        return view('user.profile.edit', compact('user'));
+        $setting = Setting::first();
+        return view('user.profile.edit', compact('user','setting'));
     }
 
     public function update(Request $request){

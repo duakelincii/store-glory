@@ -18,7 +18,8 @@ class Product extends Model
         'name',
         'category_id',
         'desc',
-        'gambar'
+        'gambar',
+        'harga'
     ];
 
     public function category()
@@ -36,7 +37,7 @@ class Product extends Model
             $ext = $file->extension();
             $filename = Str::random(30) . "." . $ext;
             $fullPath = "product/gambar-{$filename}";
-            $file->storeAs("public", $fullPath);
+            $file->public_path("public", $fullPath);
             $this->update(['gambar' => "storage/$fullPath"]);
             $this->touch();
             return true;

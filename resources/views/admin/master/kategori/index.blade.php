@@ -37,7 +37,7 @@
                                 Hasil : {{ $datas->count() }}
                             </p>
                             <div>
-                                <a href="{{ route('admin.ball.index') }}" class="btn btn-secondary">Reset</a>
+                                <a href="{{ route('admin.kategori.index') }}" class="btn btn-secondary">Reset</a>
                                 <button class="btn btn-info">Cari</button>
                             </div>
                         </div>

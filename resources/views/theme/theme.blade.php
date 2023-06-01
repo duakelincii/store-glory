@@ -10,7 +10,7 @@
         integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     @yield('css')
-    <title>Neofutsal - @yield('title')</title>
+    <title>{{$setting->name}} - @yield('title')</title>
 </head>
 
 <body class="bg-gray-100">
@@ -24,7 +24,7 @@
             <div class="flex justify-between align-middle items-center relative" style="z-index: 100">
                 <div id="logo" class="flex-shrink-0">
                     <a href="/">
-                        <img src="{{asset('images/logo-neofutsal.png')}}" alt="Logo Neofutsal"
+                        <img src="{{asset($setting->logo)}}" alt="Logo Neofutsal"
                             class="object-cover max-h-16 max-w-26">
                     </a>
                 </div>
@@ -71,6 +71,7 @@
                 @endauth
             </div>
             {{-- End of Header --}}
+
             {{-- Content --}}
             @yield('content')
             {{-- End of Content --}}

@@ -4,7 +4,7 @@
 -->
     <div class="logo">
         <a href="{{ url('') }}" class="simple-text logo-normal">
-            {{ __('Neo Sayur') }}
+            {{ __('Sultan Sayur') }}
         </a>
     </div>
     <div class="sidebar-wrapper" id="sidebar-wrapper">
@@ -31,7 +31,7 @@
                                 <p> {{ __('Pengguna') }} </p>
                             </a>
                         </li>
-                        <li class="@if ($activePage == 'field') active @endif">
+                        {{-- <li class="@if ($activePage == 'field') active @endif">
                             <a href="{{ route('admin.field.index') }}">
                                 <i class="fas fa-futbol"></i>
                                 <p> {{ __('Lapangan') }} </p>
@@ -42,7 +42,7 @@
                                 <i class="fas fa-futbol"></i>
                                 <p> {{ __('Jenis Bola') }} </p>
                             </a>
-                        </li>
+                        </li> --}}
                         <li class="@if ($activePage == 'product') active @endif">
                             <a href="{{ route('admin.product.index') }}">
                                 <i class="fa fa-cart-arrow-down" aria-hidden="true"></i>
@@ -64,7 +64,7 @@
                     </ul>
                 </div>
             </li>
-            <li>
+            {{-- <li>
                 <a data-toggle="collapse" href="#order-menu">
                     <i class="fas fa-receipt"></i>
                     <p>
@@ -88,15 +88,21 @@
                         </li>
                     </ul>
                 </div>
-            </li>
-            <li class="@if ($activePage == 'setting') active @endif">
+            </li> --}}
+            {{-- <li class="@if ($activePage == 'setting') active @endif">
                 <a href="#">
                     <i class="fas fa-calendar-alt"></i>
                     <p>{{ __('Jadwal Futsal') }}</p>
                 </a>
+            </li> --}}
+            <li class="@if ($activePage == 'banner') active @endif">
+                <a href="{{route('admin.banner.index')}}">
+                    <i class="fas fa-cogs"></i>
+                    <p>{{ __('Banner') }}</p>
+                </a>
             </li>
             <li class="@if ($activePage == 'setting') active @endif">
-                <a href="#">
+                <a href="{{route('admin.settings.index')}}">
                     <i class="fas fa-cogs"></i>
                     <p>{{ __('Pengaturan') }}</p>
                 </a>

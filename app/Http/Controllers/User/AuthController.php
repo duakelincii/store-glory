@@ -5,6 +5,7 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
+use App\Models\Setting;
 use App\Models\User;
 use Exception;
 use Helpers;
@@ -20,7 +21,8 @@ class AuthController extends Controller
         if (auth()->check()) {
             return redirect("/");
         }
-        return view('user.auth.login');
+        $setting = Setting::first();
+        return view('user.auth.login',compact('setting'));
     }
 
     /**
@@ -53,7 +55,8 @@ class AuthController extends Controller
         if (auth()->check()) {
             return redirect("/");
         }
-        return view('user.auth.register');
+        $setting = Setting::first();
+        return view('user.auth.register',compact('setting'));
     }
 
     public function authRegister()

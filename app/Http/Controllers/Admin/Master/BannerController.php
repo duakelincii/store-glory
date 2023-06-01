@@ -2,29 +2,22 @@
 
 namespace App\Http\Controllers\Admin\Master;
 
-use Exception;
-use App\Models\Product;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Category;
+use App\Models\Banner;
 use App\Models\Setting;
+use Exception;
+use Illuminate\Http\Request;
 
-class ProductController extends Controller
+class BannerController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         $q = request()->q;
-        $products = Product::when($q, function ($query) use ($q) {
+        $banners = Banner::when($q, function ($query) use ($q) {
             return $query->search($q);
         })->orderByDesc("updated_at")->paginate(6);
-        $category = Category::latest()->get();
         $setting = Setting::first();
-        return view('admin.master.product.index', compact('products', 'category','setting'));
+        return view('admin.master.banner.index', compact('banners','setting'));
     }
 
     /**
@@ -47,24 +40,21 @@ class ProductController extends Controller
     {
         try {
             $validated = $request->validate([
-                'name' => 'required|string',
-                'category_id' => 'required|integer',
-                'desc' => 'string',
+                'title' => 'required|string',
                 'gambar' => 'mimes:png,jpg',
-                'harga' => 'required'
+                'is_active' => 'required'
             ]);
+
             if ($request->file('gambar')) {
                 $file = $request->file('gambar');
                 $extension = $file->getClientOriginalExtension(); // you can also use file name
                 $fileName = time().'.'. $extension;
-                $file->move(public_path('/uploads/product'), $fileName);
+                $file->move(public_path('/uploads/banner'), $fileName);
             }
-            Product::create([
-                'name' => $request->name,
-                'gambar' => '/uploads/product/' . $fileName,
-                'category_id' => $request->category_id,
-                'desc' => $request->desc,
-                'harga' => $request->harga
+            Banner::create([
+                'title' => $request->title,
+                'gambar' => '/uploads/banner/' . $fileName,
+                'is_active' => $request->is_active
             ]);
             return redirect()->back()->withSuccess("Produk berhasil ditambah!");
         } catch (Exception $th) {
@@ -101,39 +91,33 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Product $product)
+    public function update(Request $request, Banner $banner)
     {
         try {
             $validated = $request->validate([
-                'name' => 'required|string',
-                'category_id' => 'integer',
-                'desc' => 'string',
+                'title' => 'required|string',
                 'gambar' => 'mimes:png,jpg',
-                'harga' => 'required'
+                'is_active' => 'required'
             ]);
             if ($request->file('gambar')) {
                 $file = $request->file('gambar');
                 $extension = $file->getClientOriginalExtension(); // you can also use file name
                 $fileName = time().'.'. $extension;
-                $file->move(public_path('/uploads/product'), $fileName);
+                $file->move(public_path('/uploads/banner'), $fileName);
 
                 $inputdata = [
-                    'name' => $request->name,
-                    'gambar' => '/uploads/product/' . $fileName,
-                    'category_id' => $request->category_id,
-                    'desc' => $request->desc,
-                    'harga' => $request->harga
+                    'title' => $request->title,
+                    'gambar' => '/uploads/banner/' . $fileName,
+                    'is_active' => $request->is_active
                 ];
             }else{
                 $inputdata = [
-                    'name' => $request->name,
-                    'category_id' => $request->category_id,
-                    'desc' => $request->desc,
-                    'harga' => $request->harga
+                    'title' => $request->title,
+                    'is_active' => $request->is_active
                 ];
             }
-            $product->update($inputdata);
-            return redirect()->back()->withSuccess("Product telah diperbarui!");
+            $banner->update($inputdata);
+            return redirect()->back()->withSuccess("Kategori telah diperbarui!");
         } catch (Exception $th) {
             return redirect()->back()->with("errors", $th->getMessage())->withInput();
         }
@@ -145,14 +129,14 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Product $product)
+    public function destroy(Banner $banner)
     {
-        $product->delete();
+        $banner->delete();
         return response()->json(['success' => true, 'message' => 'Data berhasil dihapus!']);
     }
 
-    public function json(Product $product)
+    public function json(Banner $banner)
     {
-        return response()->json(['success' => true, 'data' => $product]);
+        return response()->json(['success' => true, 'data' => $banner]);
     }
 }

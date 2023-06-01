@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\Master\BallController;
+use App\Http\Controllers\Admin\Master\BannerController;
 use App\Http\Controllers\Admin\Master\FieldController;
 use App\Http\Controllers\Admin\Master\PaymentTypeController;
 use App\Http\Controllers\Admin\Master\ProductController;
@@ -10,7 +11,9 @@ use App\Http\Controllers\Admin\Order\IncomeController;
 use App\Http\Controllers\Admin\Order\SummaryController;
 use App\Http\Controllers\Admin\Order\TransactionController as OrderTransactionController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\KategoriController;
+use App\Http\Controllers\SettingController;
 use App\Http\Controllers\User\AuthController;
 use App\Http\Controllers\User\DashboardController as UserDashboardController;
 use App\Http\Controllers\User\OrderController;
@@ -61,11 +64,17 @@ Route::middleware(['auth'])->group(function () {
     Route::get('app/profile/password', [ProfileController::class, 'password'])->name('app.profile.password');
 
     Route::get('transaction', [TransactionController::class, 'index'])->name('app.transaction');
+    Route::get('cart', [CartController::class, 'index'])->name('app.cart');
     // Route::get('transaction/history', [TransactionController::class, 'history'])->name('app.transaction.history');
     Route::get('transaction/order/{order}', [TransactionController::class, 'order']);
     Route::post('transaction/pay/{transaction}', [TransactionController::class, 'pay'])->name('app.transaction.pay');
     // Route::get('transaction/repayment/{order}', [TransactionController::class, 'pay']);
     Route::get('transaction/{transaction}', [TransactionController::class, 'detail'])->name('app.transaction.detail');
+
+    Route::get('/cart/tambah/keranjang/{id}',[CartController::class,'modal'])->name('cart.tambah');
+    Route::post('cart/simpan/{id}',[CartController::class,'update'])->name('cart.simpan');
+    Route::get('cart/qty',[CartController::class,'quantity'])->name('checkout.qty');
+    Route::delete('cart/hapus/{id}',[CartController::class,'delete'])->name('delete.cart');
 });
 
 
@@ -88,15 +97,9 @@ Route::group(['middleware' => 'auth.admin', 'prefix' => 'admin', 'as' => 'admin.
             Route::patch('update/{user}', [UserController::class, 'update']);
             Route::delete('delete/{user}', [UserController::class, 'destroy']);
         });
-        // Ball Route | ball
-        Route::get('balls', [BallController::class, 'index'])->name('ball.index');
-        Route::prefix('ball')->group(function () {
-            Route::post('/', [BallController::class, 'store'])->name('ball.store');
-            Route::get('create', [BallController::class, 'create'])->name('ball.create');
-            Route::get('edit/{ball}', [BallController::class, 'edit']);
-            Route::patch('update/{ball}', [BallController::class, 'update']);
-            Route::delete('delete/{ball}', [BallController::class, 'destroy']);
-        });
+
+        Route::get('settings', [SettingController::class,'index'])->name('settings.index');
+        Route::post('settings', [SettingController::class,'post'])->name('settings.post');
 
         // Kategori Route
         // Route: /admin/master/kategori
@@ -111,15 +114,16 @@ Route::group(['middleware' => 'auth.admin', 'prefix' => 'admin', 'as' => 'admin.
             Route::patch('update/{product}', [ProductController::class, 'update']);
             Route::delete('delete/{product}', [ProductController::class, 'destroy']);
         });
-        // Lapangan Route | field
-        Route::get('fields', [FieldController::class, 'index'])->name('field.index');
-        Route::prefix('field')->group(function () {
-            Route::post('/', [FieldController::class, 'store'])->name('field.store');
-            Route::get('create', [FieldController::class, 'create'])->name('field.create');
-            Route::get('edit/{field}', [FieldController::class, 'edit'])->name('field.edit');
-            Route::patch('edit/{field}', [FieldController::class, 'update'])->name('field.update');
-            Route::delete('delete/{field}', [FieldController::class, 'destroy']);
+        // Route: /admin/master/banner
+        Route::get('banners', [BannerController::class, 'index'])->name('banner.index');
+        Route::prefix('banner')->group(function () {
+            Route::post('/', [BannerController::class, 'store'])->name('banner.store');
+            Route::get('create', [BannerController::class, 'create'])->name('banner.create');
+            Route::get('edit/{banner}', [BannerController::class, 'edit']);
+            Route::patch('update/{banner}', [BannerController::class, 'update']);
+            Route::delete('delete/{banner}', [BannerController::class, 'destroy']);
         });
+
         // Lapangan Route | paymentType
         Route::get('payment-types', [PaymentTypeController::class, 'index'])->name('paymentType.index');
         Route::prefix('payment-type')->group(function () {

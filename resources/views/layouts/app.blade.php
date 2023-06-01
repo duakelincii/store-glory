@@ -8,7 +8,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <!-- Extra details for Live View on GitHub Pages -->
     <title>
-        Neofutsal - @yield('title')
+        {{$setting->name}} - @yield('title')
     </title>
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no'
         name='viewport' />
@@ -79,7 +79,7 @@
                 cancelButtonText: `Batal`,
             }).then((result) => {
                 if (result.isConfirmed) {
-                    el.submit();    
+                    el.submit();
                 }
             })
         }
@@ -141,9 +141,9 @@
     </script>
     @stack('js')
     @if ($msg = session()->get('success'))
-        <script> toastr('success',`{!! $msg !!}`,'Tutup'); </script>   
+        <script> toastr('success',`{!! $msg !!}`,'Tutup'); </script>
     @elseif($msg = session()->get('errors'))
-        <script> toastr('error',`{!! $msg !!}`,'Saya Paham'); console.error(`{!! $msg !!}`)</script>   
+        <script> toastr('error',`{!! $msg !!}`,'Saya Paham'); console.error(`{!! $msg !!}`)</script>
     @endif
 </body>
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Setting;
 use Exception;
 use Illuminate\Http\Request;
 
@@ -19,7 +20,8 @@ class KategoriController extends Controller
         $datas = Category::when($q, function ($query) use ($q) {
             return $query->search($q);
         })->orderByDesc("updated_at")->paginate(6);
-        return view('admin.master.kategori.index', compact('datas'));
+        $setting = Setting::first();
+        return view('admin.master.kategori.index', compact('datas','setting'));
     }
 
     /**
